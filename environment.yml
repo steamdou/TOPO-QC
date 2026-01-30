@@ -1,7 +1,6 @@
 name: topoqc
 channels:
   - conda-forge
-  - pypi
 dependencies:
   - ipykernel
   - ipython
@@ -16,7 +15,6 @@ dependencies:
   - pip
   - pre-commit
   - pydantic
-  - pymatching
   - pytest
   - python=3.11
   - pyyaml
@@ -28,3 +26,4 @@ dependencies:
     - gurobipy
     - h5py
     - pdfkit
+    - pymatching
