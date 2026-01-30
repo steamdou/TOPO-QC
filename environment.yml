@@ -1,6 +1,7 @@
 name: topoqc
 channels:
   - conda-forge
+  - pypi
 dependencies:
   - ipykernel
   - ipython
