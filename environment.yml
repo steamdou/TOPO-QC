@@ -1,0 +1,29 @@
+name: topoqc
+channels:
+  - conda-forge
+dependencies:
+  - ipykernel
+  - ipython
+  - jinja2
+  - jupyter
+  - markdown
+  - matplotlib
+  - mpi4py
+  - numpy
+  - pandas
+  - pillow
+  - pip
+  - pre-commit
+  - pydantic
+  - pymatching
+  - pytest
+  - python=3.11
+  - pyyaml
+  - requests
+  - scipy
+  - seaborn
+  - tqdm
+  - pip:
+    - gurobipy
+    - h5py
+    - pdfkit
