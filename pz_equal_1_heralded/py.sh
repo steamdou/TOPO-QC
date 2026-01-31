@@ -12,7 +12,7 @@
 
 # ---- Modules / environment ----
 module load python/anaconda-2022.05
-# module load gurobi/11.0
+module load gurobi/11.0
 source activate /project/liangjiang/aubreyz/anaconda/topoqc
 # source activate pymatch
 
