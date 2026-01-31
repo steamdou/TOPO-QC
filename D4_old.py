@@ -8,7 +8,7 @@ from gurobipy import GRB
 gp.setParam('Threads', 1)
 
 sys.path.append(os.path.dirname(__file__))
-from tableaux import *
+from tableaux_old import *
 
 def ILP_decode(V, E1_list, E2_list, T1_list, T2_list,
                Gamma1, Gamma2, w1, w2):

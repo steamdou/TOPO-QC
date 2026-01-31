@@ -3,8 +3,8 @@ import os, sys, time
 import numpy as np
 
 sys.path.append(os.path.dirname(__file__))
-from tableaux import *
-from D4 import *
+from tableaux_old import *
+from D4_old import *
 
 def init_worker():
     # Combine PID and current time (in ms) to get a unique 32-bit seed
