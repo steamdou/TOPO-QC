@@ -72,9 +72,9 @@ if __name__ == "__main__":
     # ---- start timer ----
     start_time = time.time()
 
-    L = [4, 4, 4, 4,] # 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7
+    L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
     p = [0.158, 0.16, 0.162, 0.164, 0.166, 0.168, 0.17, 0.172]
-    stop = 10
+    stop = 10000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
