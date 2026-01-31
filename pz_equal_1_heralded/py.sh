@@ -25,4 +25,4 @@ export NUMEXPR_NUM_THREADS=1
 export TOPO_QC='/home/aubreyz/TOPO-QC'
 
 # run
-python $TOPO_QC/pz=1/src/main.py
+python $TOPO_QC/pz_equal_1_heralded/src/main.py
