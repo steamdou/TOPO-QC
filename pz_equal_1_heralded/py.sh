@@ -24,5 +24,9 @@ export NUMEXPR_NUM_THREADS=1
 
 export TOPO_QC='/home/aubreyz/TOPO-QC'
 
-# run
-python $TOPO_QC/pz_equal_1_heralded/src/main.py
+
+# ---- Go to the directory where you run sbatch ----
+cd "/home/aubreyz/TOPO-QC/pz_equal_1_heralded"
+
+# If your main.py is in ./src/main.py:
+python -m src.main

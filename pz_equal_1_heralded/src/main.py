@@ -4,8 +4,8 @@ import numpy as np
 import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
-from tableaux import *
-from D4 import *
+from .tableaux import *
+from .D4 import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
@@ -72,9 +72,9 @@ if __name__ == "__main__":
     # ---- start timer ----
     start_time = time.time()
 
-    L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.158, 0.16, 0.162, 0.164, 0.166, 0.168, 0.17, 0.172] 
-    stop = 10000
+    L = [4, 4, 4, 4,] # 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7
+    p = [0.158, 0.16, 0.162, 0.164, 0.166, 0.168, 0.17, 0.172]
+    stop = 10
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/run1_pz_1_heralded/output_{timestamp}.txt"
+    output_file = f"/project/liangjiang/aubreyz/run1_pz_1_heralded/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")

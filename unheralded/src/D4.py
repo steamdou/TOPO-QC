@@ -5,7 +5,7 @@ import gurobipy as gp
 from gurobipy import GRB
 
 sys.path.append(os.path.dirname(__file__))
-from tableaux import *
+from .tableaux import *
 
 def ILP_decode(V, E1_list, E2_list, T1_list, T2_list,
                Gamma1, Gamma2, w1, w2, env=None):

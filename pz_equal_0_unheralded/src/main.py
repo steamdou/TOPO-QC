@@ -4,8 +4,8 @@ import numpy as np
 import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
-from tableaux import *
-from D4 import *
+from .tableaux import *
+from .D4 import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
