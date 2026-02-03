@@ -13,7 +13,8 @@
 # ---- Modules / environment ----
 module load python/anaconda-2022.05
 module load gurobi/11.0
-source activate pymatch
+source activate /project/liangjiang/aubreyz/anaconda/topoqc
+# source activate pymatch
 
 # Avoid over-subscription from BLAS/MKL using too many threads
 export OMP_NUM_THREADS=1
@@ -21,9 +22,11 @@ export MKL_NUM_THREADS=1
 export OPENBLAS_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
 
+export TOPO_QC='/home/aubreyz/TOPO-QC'
+
+
 # ---- Go to the directory where you run sbatch ----
-cd "$SLURM_SUBMIT_DIR"
+cd "$TOPO_QC/pz_1_unheralded"
 
 # If your main.py is in ./src/main.py:
-cd src
-python main.py
+python -m src.main
