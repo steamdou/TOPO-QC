@@ -72,8 +72,8 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.158, 0.16, 0.162, 0.164, 0.166, 0.168, 0.17, 0.172]
-    stop = 10
+    p = [0.17, 0.172, 0.174, 0.176, 0.178, 0.18, 0.182, 0.184]
+    stop = 10000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"../output_{timestamp}.txt"
+    output_file = f"/project/liangjiang/aubreyz/run5_pz_0_heralded/output_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
