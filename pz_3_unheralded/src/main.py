@@ -29,8 +29,9 @@ def run_simulation(args):
 
     l_index, p_index, L, p, stop = args
     px = p[p_index]
-    w1 = 1
-    w2 = 27*L[l_index]*L[l_index]
+    pz = 0.03
+    w1 = np.log(1/px - 1)
+    w2 = np.log(1/pz - 1)
     
     tot_count = 0
     error_count = 0
@@ -43,7 +44,7 @@ def run_simulation(args):
         tot_count += 1
         code = D4_Code(L[l_index], np.array([0,1,2]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
-        # code.Z_errors(pz)
+        code.Z_errors(pz)
         s = code.measure_e_anyons()
         if (np.isscalar(s) and s == 5):
             error_count += 1
@@ -72,7 +73,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.153, 0.155, 0.157, 0.159, 0.161, 0.163, 0.165, 0.167]
+    p = [0.131, 0.133, 0.135, 0.137, 0.139, 0.141, 0.143, 0.145]
     stop = 10000
 
     error_rate = np.zeros((len(L), len(p)))
@@ -101,7 +102,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/run10_pz_0_unheralded/output_{timestamp}.txt"
+    output_file = f"/project/liangjiang/aubreyz/run8_pz_3_unheralded/output_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")

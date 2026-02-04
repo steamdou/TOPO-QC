@@ -26,7 +26,7 @@ export TOPO_QC='/home/aubreyz/TOPO-QC'
 
 
 # ---- Go to the directory where you run sbatch ----
-cd "$TOPO_QC/pz_equal_0_unheralded"
+cd "$TOPO_QC/pz_2_unheralded"
 
 # If your main.py is in ./src/main.py:
 python -m src.main
