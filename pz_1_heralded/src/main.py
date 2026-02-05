@@ -29,7 +29,7 @@ def run_simulation(args):
 
     l_index, p_index, L, p, stop = args
     px = p[p_index]
-    pz = 0.03
+    pz = 0.01
     w1 = np.log(1/px - 1)
     w2 = np.log(1/pz - 1)
     
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.133, 0.135, 0.137, 0.139, 0.141, 0.143, 0.145, 0.147]
+    p = [0.158, 0.16, 0.162, 0.164, 0.166, 0.168, 0.17, 0.172]
     stop = 10000
 
     error_rate = np.zeros((len(L), len(p)))
@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/run3_pz_3_heralded/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
+    output_file = f"/project/liangjiang/aubreyz/run1_pz_1_heralded/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
