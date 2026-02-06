@@ -29,7 +29,7 @@ def run_simulation(args):
 
     l_index, p_index, L, p, stop = args
     px = p[p_index]
-    pz = 0.01
+    pz = 0.02
     w1 = np.log(1/px - 1)
     w2 = np.log(1/pz - 1)
     
