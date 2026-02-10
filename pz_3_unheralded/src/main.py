@@ -85,7 +85,7 @@ if __name__ == "__main__":
     args = [(l, i, L, p, stop) for l in range(len(L)) for i in range(len(p))]
 
     ctx = mp.get_context("spawn")
-    with ctx.Pool(processes=32, initializer=init_worker) as pool:
+    with ctx.Pool(processes=36, initializer=init_worker) as pool:
         results = pool.map(run_simulation, args)
 
     # Collect results
