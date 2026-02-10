@@ -73,8 +73,8 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.139, 0.141, 0.143, 0.145, 0.147, 0.149, 0.151, 0.153]
-    stop = 10000
+    p = [0.15, 0.16, 0.17, 0.18, 0.19, 0.2]
+    stop = 2000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
