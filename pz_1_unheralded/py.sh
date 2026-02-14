@@ -29,4 +29,4 @@ export TOPO_QC='/home/aubreyz/TOPO-QC'
 cd "$TOPO_QC/pz_1_unheralded"
 
 # If your main.py is in ./src/main.py:
-python -m src.main
+python -m src.main_logicalX
