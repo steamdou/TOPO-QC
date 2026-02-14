@@ -41,7 +41,7 @@ def run_simulation(args):
         tot_count += 1
         code = D4_Code(L[l_index], np.array([0,1,2]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
-        code.Z_errors(pz)
+        # code.Z_errors(pz)
         s = code.measure_e_anyons()
         if (np.isscalar(s) and s == 5):
             error_count += 1
@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_0_heralded_X/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
+    output_file = f"/Users/aubreyzhang/Documents/output_{timestamp}.txt" # /Users/aubreyzhang/Documents #/project/liangjiang/aubreyz/pz_0_heralded_X
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
