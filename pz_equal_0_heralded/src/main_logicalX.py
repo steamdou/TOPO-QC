@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/Users/aubreyzhang/Documents/output_{timestamp}.txt" # /Users/aubreyzhang/Documents #/project/liangjiang/aubreyz/pz_0_heralded_X
+    output_file = f"/project/liangjiang/aubreyz/pz_0_heralded_X/output_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
