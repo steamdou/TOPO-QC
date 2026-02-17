@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_4_heralded_X/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/pz_4_heralded_X/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
