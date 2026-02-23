@@ -29,9 +29,8 @@ def run_simulation(args):
 
     l_index, p_index, L, p, stop = args
     px = p[p_index]
-    pz = 0.01
-    w1 = np.log(1/px - 1)
-    w2 = np.log(1/pz - 1)
+    w1 = 1
+    w2 = 27*L[l_index]*L[l_index]
     
     tot_count = 0
     error_count = 0
@@ -43,7 +42,7 @@ def run_simulation(args):
         tot_count += 1
         code = D4_Code(L[l_index], np.array([]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
-        code.Z_errors(pz)
+        # code.Z_errors(pz)
         s = code.measure_e_anyons()
         if (np.isscalar(s) and s == 5):
             raise ValueError('collapsed X logical')

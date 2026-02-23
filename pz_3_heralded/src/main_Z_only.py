@@ -29,7 +29,7 @@ def run_simulation(args):
 
     l_index, p_index, L, p, stop = args
     px = p[p_index]
-    pz = 0.01
+    pz = 0.03
     w1 = np.log(1/px - 1)
     w2 = np.log(1/pz - 1)
     
@@ -71,8 +71,8 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.158, 0.16, 0.162, 0.164, 0.166, 0.168, 0.17, 0.172]
-    stop = 10000
+    p = [0.102, 0.112, 0.122, 0.132, 0.142, 0.152, 0.162, 0.172]
+    stop = 2000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
