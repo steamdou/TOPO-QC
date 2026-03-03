@@ -5,7 +5,7 @@ import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
 from .tableaux import *
-from .D4_allZ import *
+from .D4 import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
@@ -35,35 +35,37 @@ def run_simulation(args):
     
     tot_count = 0
     error_count = 0
-    # odd_count = 0
+    flux_count = 0
+    charge_count = 0
     cn_dict = connection_dict((L[l_index]*3,L[l_index]*3))
     V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr = build_ILP_structure((L[l_index]*3,L[l_index]*3), cn_dict, w1, w2)
 
     while tot_count < stop:
         tot_count += 1
-        code = D4_Code(L[l_index], np.array([]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
+        code = D4_Code(L[l_index], np.array([0,1,2]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
         code.Z_errors(pz)
         s = code.measure_e_anyons()
         if (np.isscalar(s) and s == 5):
-            raise ValueError('collapsed X logical')
+            error_count += 1
+            flux_count += 1
         else:
             code.flux_correction()
             output = code.correct_e_anyons()
-            if output == 3:
-                # return 3 if there are odd number of e-anyons for any color
-                # odd_count += 1
+            if (np.isscalar(output) and output == 5):
                 error_count += 1
-            elif output == 5:
-                raise ValueError('collapsed X logical')
-            elif output == 0:
-                if not np.array_equal(code.LZ, np.zeros(12)):
-                    error_count += 1
+                flux_count += 1
             else:
-                raise ValueError('unexpected output')
-    # print(odd_count, error_count)
+                lx_out = code.decode_X_logicals()
+                if lx_out==5 or (code.LZ[0] != 0) or (code.LZ[1] != 0) or (code.LZ[2] != 0):
+                    error_count += 1
+                    flux_count += 1
+                elif lx_out:
+                    error_count += 1
+                    charge_count += 1
+ 
     error_rate = error_count / tot_count
-    return l_index, p_index, error_rate, tot_count
+    return l_index, p_index, error_rate, tot_count, flux_count/tot_count, charge_count/tot_count
 
 # Main script
 if __name__ == "__main__":
@@ -71,12 +73,13 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.146, 0.148, 0.15, 0.152, 0.154, 0.156, 0.158, 0.16]
-    #[0.102, 0.112, 0.122, 0.132, 0.142, 0.152, 0.162, 0.172]
+    p = [0.133, 0.135, 0.137, 0.139, 0.141, 0.143, 0.145, 0.147]
     stop = 10000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
+    flux_count = np.zeros((len(L), len(p)))
+    charge_count = np.zeros((len(L), len(p)))
 
     # Prepare arguments for parallel execution
     args = [(l, i, L, p, stop) for l in range(len(L)) for i in range(len(p))]
@@ -86,9 +89,11 @@ if __name__ == "__main__":
         results = pool.map(run_simulation, args)
 
     # Collect results
-    for l, i, rate, count in results:
+    for l, i, rate, count, flux, charge in results:
         error_rate[l][i] = rate
         counter[l][i] = count
+        flux_count[l][i] = flux
+        charge_count[l][i] = charge
 
     # ---- stop timer ----
     end_time = time.time()
@@ -97,7 +102,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/pz_3_heralded_Z/output_{timestamp}.txt"
+    output_file = f"/project/liangjiang/aubreyz/run3_pz_3_heralded/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
@@ -107,6 +112,10 @@ if __name__ == "__main__":
 
         f.write("Error Rate:\n")
         np.savetxt(f, error_rate, fmt="%.6f")
+        f.write("\nFlux Rate:\n")
+        np.savetxt(f, flux_count, fmt="%.6f")
+        f.write("\nCharge Rate:\n")
+        np.savetxt(f, charge_count, fmt="%.6f")
         f.write("\nCounter:\n")
         np.savetxt(f, counter, fmt="%d")
 

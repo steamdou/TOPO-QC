@@ -425,8 +425,7 @@ class D4_Code:
                                                                                  #The last six primed operators are to be used for updating logical X operators, but they are equivalent to the unprimed counterpart
         self.LX_vec = np.zeros((6,4*self.Nx*self.Ny))                            #dressing of logical X operators, rows: [Rv,Gv,Bv,Rh,Gh,Bh]
         self.LX_sign = 2*np.ones(np.shape(self.LX_vec)[0])
-        if self.encode_x.size > 0:
-            self.LX_sign[self.encode_x] = 0                                      #set logical X stabilizers to 0, non-existent logical X to 2
+        self.LX_sign[self.encode_x]=0                                            #set logical X stabilizers to 0, non-existent logical X to 2
         #initialized independently to improve speed
         self.cn_dict, self.V, self.E1_list, self.E2_list, self.Gamma1, self.Gamma2, self.w1_arr, self.w2_arr = cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr
 
@@ -494,28 +493,21 @@ class D4_Code:
                 return 5
             else:
                 a_syndrome[kv]=outcome
-        try:
-            z_correction_locations = np.nonzero(self.cn_dict['mgraph'][3].decode(a_syndrome))[0]        
-            for z_edge in z_correction_locations:
-                apply_Z(z_edge,(self.Nx,self.Ny),self.SS,self.RR,self.LX_vec,self.LX_sign,self.cn_dict)
-            #check that all errors are corrected
-            assert np.array_equal(self.bL, np.zeros(self.Nx*self.Ny))
-            assert np.array_equal(self.bR, np.zeros(self.Nx*self.Ny))
-            for site in range(self.Nx*self.Ny):
-                outcome = measure_A(site,(self.Nx,self.Ny),self.SS,self.DD,self.RR,self.bL,self.bR,self.LZ,self.LX_vec,self.LX_sign,self.cn_dict,rng=self.rng)
-                if outcome != 0:
-                    raise ValueError("anyons not corrected")
-            return 0
-        except ValueError: # No matching found, odd number of e-anyon of any color
-            return 3 #return 3 if there are odd number of e-anyons for each color
+        z_correction_locations = np.nonzero(self.cn_dict['mgraph'][3].decode(a_syndrome))[0]
+        #print(z_correction_locations)
+        for z_edge in z_correction_locations:
+            apply_Z(z_edge,(self.Nx,self.Ny),self.SS,self.RR,self.LX_vec,self.LX_sign,self.cn_dict)
+        #check that all errors are corrected
+        assert np.array_equal(self.bL, np.zeros(self.Nx*self.Ny))
+        assert np.array_equal(self.bR, np.zeros(self.Nx*self.Ny))
+        for site in range(self.Nx*self.Ny):
+            outcome = measure_A(site,(self.Nx,self.Ny),self.SS,self.DD,self.RR,self.bL,self.bR,self.LZ,self.LX_vec,self.LX_sign,self.cn_dict,rng=self.rng)
+            if outcome != 0:
+                raise ValueError("anyons not corrected")
+        return 0
     
     def decode_X_logicals(self): 
         lx_total_sign = self.LX_sign.copy()
-
-        # If no logical X was initially encoded, nothing to check
-        if self.encode_x.size == 0:
-            return False
-
         # iterate over initial x-logicals
         for i in self.encode_x:
             if np.any(self.LX_vec[i,:3*self.Nx*self.Ny]==1) and self.LX_sign[i]<=1: # has Z dressing and active
