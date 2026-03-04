@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=d4_sim_python          
-#SBATCH --account=pi-liangjiang
+#SBATCH --account=pi-verresen
 #SBATCH --output=d4_sim-%J.out           
 #SBATCH --error=d4_sim-%J.err           
 #SBATCH --time=36:00:00                  
@@ -29,4 +29,4 @@ export TOPO_QC='/home/aubreyz/TOPO-QC'
 cd "$TOPO_QC/pz_3.1_heralded"
 
 # If your main.py is in ./src/main.py:
-python -m src.main_Z_only
+python -m src.main_logicalX
