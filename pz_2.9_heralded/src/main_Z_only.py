@@ -29,7 +29,7 @@ def run_simulation(args):
 
     l_index, p_index, L, p, stop = args
     px = p[p_index]
-    pz = 0.026
+    pz = 0.025
     w1 = np.log(1/px - 1)
     w2 = np.log(1/pz - 1)
     
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.146, 0.148, 0.15, 0.152, 0.154, 0.156, 0.158, 0.16]
+    p = [0.15, 0.152, 0.154, 0.156, 0.158, 0.16]
     #[0.102, 0.112, 0.122, 0.132, 0.142, 0.152, 0.162, 0.172]
     stop = 10000
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     args = [(l, i, L, p, stop) for l in range(len(L)) for i in range(len(p))]
 
     ctx = mp.get_context("spawn")
-    with ctx.Pool(processes=32, initializer=init_worker) as pool:
+    with ctx.Pool(processes=24, initializer=init_worker) as pool:
         results = pool.map(run_simulation, args)
 
     # Collect results
@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/pz_2.9_heralded_Z/pz_2.6_output_{timestamp}.txt"
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/pz_2.9_heralded_Z/pz_2.5_output_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")

@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --job-name=d4_sim_python          
-#SBATCH --account=pi-liangjiang
+#SBATCH --account=pi-verresen
 #SBATCH --output=d4_sim-%J.out           
 #SBATCH --error=d4_sim-%J.err           
 #SBATCH --time=36:00:00                  
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=32             
+#SBATCH --cpus-per-task=24             
 #SBATCH --mem=64GB
 #SBATCH --partition=caslake
 
