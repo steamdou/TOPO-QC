@@ -71,7 +71,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.146, 0.148, 0.15, 0.152, 0.154, 0.156]
+    p = [0.136, 0.138, 0.14, 0.142, 0.144, 0.146, 0.148, 0.15]
     #[0.102, 0.112, 0.122, 0.132, 0.142, 0.152, 0.162, 0.172]
     stop = 10000
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     args = [(l, i, L, p, stop) for l in range(len(L)) for i in range(len(p))]
 
     ctx = mp.get_context("spawn")
-    with ctx.Pool(processes=24, initializer=init_worker) as pool:
+    with ctx.Pool(processes=32, initializer=init_worker) as pool:
         results = pool.map(run_simulation, args)
 
     # Collect results
