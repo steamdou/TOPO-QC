@@ -31,7 +31,7 @@ def run_simulation(args):
     px = p[p_index]
     pz = 0.04
     w1 = np.log(1/px - 1)
-    w2 = np.log(1/pz - 1)*5
+    w2 = np.log(1/pz - 1)/10
     
     tot_count = 0
     error_count = 0
@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/pz_4_heralded_X_W2div5/multiplied_output_{timestamp}.txt" # /Users/aubreyzhang/Documents
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/pz_4_heralded_X_W2div5/div10_output_{timestamp}.txt" # /Users/aubreyzhang/Documents
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
