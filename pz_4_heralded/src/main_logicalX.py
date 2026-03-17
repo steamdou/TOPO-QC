@@ -31,7 +31,7 @@ def run_simulation(args):
     px = p[p_index]
     pz = 0.04
     w1 = np.log(1/px - 1)
-    w2 = np.log(1/pz - 1)
+    w2 = np.log(1/pz - 1)/100
     
     tot_count = 0
     error_count = 0
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.08, 0.09, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15]
+    p = [0.09, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16]
     #[0.09, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16]
     # [0.11, 0.112, 0.114, 0.116, 0.118, 0.12, 0.122, 0.124]
     stop = 8000
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/pz_4_heralded_X/new_2nd_step_output_{timestamp}.txt" # /Users/aubreyzhang/Documents
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/pz_4_heralded_X/new_2nd_step_div100_output_{timestamp}.txt" # /Users/aubreyzhang/Documents
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
