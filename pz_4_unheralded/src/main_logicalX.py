@@ -5,7 +5,7 @@ import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
 from .tableaux import *
-from .D4 import *
+from .D4_modified_2nd_step import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
@@ -67,8 +67,9 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.142, 0.144, 0.146, 0.148, 0.15, 0.152, 0.154, 0.156]
-    stop = 10000
+    p = [0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19]
+    #[0.142, 0.144, 0.146, 0.148, 0.15, 0.152, 0.154, 0.156]
+    stop = 8000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
@@ -92,7 +93,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/pz_4_unheralded_X/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/pz_4_unheralded_X/new_2nd_step_output_{timestamp}.txt" # /Users/aubreyzhang/Documents
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
