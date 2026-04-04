@@ -31,7 +31,7 @@ def run_simulation(args):
     px = p[p_index]
     pz = 0.04
     w1 = np.log(1/px - 1)
-    w2 = np.log(1/pz - 1)/100
+    w2 = np.log(1/pz - 1)
     
     tot_count = 0
     error_count = 0
