@@ -5,7 +5,7 @@ import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
 from .tableaux import *
-from .D4_allZ import *
+from .D4_final import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
@@ -71,7 +71,8 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.073, 0.083, 0.093, 0.103, 0.113, 0.123, 0.133, 0.143]
+    p = 
+    [0.073, 0.083, 0.093, 0.103, 0.113, 0.123, 0.133, 0.143]
     stop = 2000
 
     error_rate = np.zeros((len(L), len(p)))

@@ -5,7 +5,7 @@ import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
 from .tableaux import *
-from .D4_allZ import *
+from .D4_final import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
