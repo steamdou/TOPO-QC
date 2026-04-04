@@ -29,7 +29,7 @@ def run_simulation(args):
 
     l_index, p_index, L, p, stop = args
     px = p[p_index]
-    pz = 0.036
+    pz = 0.03
     w1 = np.log(1/px - 1)
     w2 = np.log(1/pz - 1)
     
@@ -71,9 +71,10 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.136, 0.138, 0.14, 0.142, 0.144, 0.146, 0.148, 0.15]
+    p = [0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.21]
+    # [0.136, 0.138, 0.14, 0.142, 0.144, 0.146, 0.148, 0.15]
     #[0.102, 0.112, 0.122, 0.132, 0.142, 0.152, 0.162, 0.172]
-    stop = 10000
+    stop = 8000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
@@ -97,7 +98,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/pz_3.1_heralded_Z/pz_3.6_output_{timestamp}.txt"
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/ILP_improved/pz_3_heralded_Z/output_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
