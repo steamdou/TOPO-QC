@@ -5,7 +5,7 @@ import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
 from .tableaux import *
-from .D4 import *
+from .D4_MWPM import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
@@ -30,8 +30,8 @@ def run_simulation(args):
     l_index, p_index, L, p, stop = args
     px = p[p_index]
     pz = 0.03
-    w1 = np.log(1/px - 1)
-    w2 = np.log(1/pz - 1)
+    w1 = 1
+    w2 = 1
     
     tot_count = 0
     error_count = 0
@@ -43,20 +43,16 @@ def run_simulation(args):
         code = D4_Code(L[l_index], np.array([0,1,2]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
         code.Z_errors(pz)
-        s = code.measure_e_anyons()
-        if (np.isscalar(s) and s == 5):
+        code.flux_correction_MWPM()
+        output = code.correct_e_anyons()
+        if (np.isscalar(output) and output == 5):
             error_count += 1
         else:
-            code.flux_correction()
-            output = code.correct_e_anyons()
-            if (np.isscalar(output) and output == 5):
+            lx_out = code.decode_X_logicals()
+            if lx_out==5:
                 error_count += 1
-            else:
-                lx_out = code.decode_X_logicals()
-                if lx_out==5:
-                    error_count += 1
-                elif lx_out:
-                    error_count += 1
+            elif lx_out:
+                error_count += 1
  
     error_rate = error_count / tot_count
     return l_index, p_index, error_rate, tot_count
@@ -67,7 +63,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.148, 0.15, 0.152, 0.154, 0.156, 0.158, 0.16, 0.162]
+    p = [0.142, 0.144, 0.146, 0.148, 0.15, 0.152, 0.154, 0.156]
     stop = 10000
 
     error_rate = np.zeros((len(L), len(p)))
@@ -92,7 +88,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/pz_3_unheralded_X/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/ILP_improved/pz_3_unheralded_X/output_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")

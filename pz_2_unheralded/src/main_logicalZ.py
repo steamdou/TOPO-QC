@@ -29,7 +29,7 @@ def run_simulation(args):
 
     l_index, p_index, L, p, stop = args
     px = p[p_index]
-    pz = 0.04
+    pz = 0.02
     w1 = 1
     w2 = 1
     
@@ -40,7 +40,7 @@ def run_simulation(args):
 
     while tot_count < stop:
         tot_count += 1
-        code = D4_Code(L[l_index], np.array([0,1,2]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
+        code = D4_Code(L[l_index], np.array([]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
         code.Z_errors(pz)
         code.flux_correction_MWPM()
@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/ILP_improved/pz_4_unheralded_X/output_{timestamp}.txt"
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/ILP_improved/pz_2_unheralded_Z/output_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
