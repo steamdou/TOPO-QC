@@ -5,7 +5,7 @@ import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
 from .tableaux import *
-from .D4_final import *
+from .D4_eff import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
@@ -30,7 +30,7 @@ def run_simulation(args):
     l_index, p_index, L, p, stop = args
     px = p[p_index]
     pz = 0.01
-    w1 = np.log(1/px - 1)
+    w1 = 1
     w2 = np.log(1/pz - 1)
     
     tot_count = 0

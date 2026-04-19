@@ -5,7 +5,7 @@ import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
 from .tableaux import *
-from .D4_final import *
+from .D4_eff import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
@@ -30,8 +30,8 @@ def run_simulation(args):
     l_index, p_index, L, p, stop = args
     px = p[p_index]
     pz = 0.04
-    w1 = np.log(1/px - 1)
-    w2 = np.log(1/pz - 1)
+    w1 = 1
+    w2 = 0.18
     
     tot_count = 0
     error_count = 0
@@ -71,13 +71,14 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.158, 0.16, 0.162, 0.164, 0.166, 0.168, 0.17, 0.172]
+    p = [0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17]
+    #[0.158, 0.16, 0.162, 0.164, 0.166, 0.168, 0.17, 0.172]
     #[0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17]
     # [0.143, 0.146, 0.15, 0.154, 0.158, 0.162]
     #[0.152, 0.154, 0.156, 0.158, 0.16, 0.162, 0.164, 0.166]
     #[0.14, 0.142, 0.144, 0.146, 0.148, 0.15, 0.152, 0.144]
     #[0.073, 0.083, 0.093, 0.103, 0.113, 0.123, 0.133, 0.143]
-    stop = 10000
+    stop = 8000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
@@ -86,7 +87,7 @@ if __name__ == "__main__":
     args = [(l, i, L, p, stop) for l in range(len(L)) for i in range(len(p))]
 
     ctx = mp.get_context("spawn")
-    with ctx.Pool(processes=24, initializer=init_worker) as pool:
+    with ctx.Pool(processes=32, initializer=init_worker) as pool:
         results = pool.map(run_simulation, args)
 
     # Collect results
@@ -101,7 +102,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/ILP_improved/pz_4_heralded_Z/output_{timestamp}.txt"
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/ILP_eff_Z/pz_4_heralded_Z/output_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")

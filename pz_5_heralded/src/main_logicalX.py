@@ -5,7 +5,7 @@ import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
 from .tableaux import *
-from .D4_final import *
+from .D4_eff import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
@@ -30,8 +30,8 @@ def run_simulation(args):
     l_index, p_index, L, p, stop = args
     px = p[p_index]
     pz = 0.05
-    w1 = np.log(1/px - 1)
-    w2 = np.log(1/pz - 1)
+    w1 = 1
+    w2 = 0.17
     
     tot_count = 0
     error_count = 0
@@ -67,10 +67,11 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.136, 0.138, 0.14, 0.142, 0.144, 0.146, 0.148, 0.15]
+    p = [0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17]
+    #[0.136, 0.138, 0.14, 0.142, 0.144, 0.146, 0.148, 0.15]
     #[0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17]
     #[0.11, 0.112, 0.114, 0.116, 0.118, 0.12, 0.122, 0.124]
-    stop = 10000
+    stop = 8000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
@@ -94,7 +95,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/ILP_improved/pz_5_heralded_X/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/ILP_eff_X/pz_5_heralded_X/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
