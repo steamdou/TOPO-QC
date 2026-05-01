@@ -5,7 +5,7 @@ import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
 from .tableaux import *
-from .D4_final import *
+from .D4_eff import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
@@ -31,7 +31,8 @@ def run_simulation(args):
     px = p[p_index]
     pz = 0.01
     w1 = 1
-    w2 = 0.9
+    w2 = 0.57
+    #0.3
     #0.57
     
     tot_count = 0
@@ -101,7 +102,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/ILP_eff_Z/pz_1_heralded_Z/output0.9_{timestamp}.txt"
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/ILP_eff_Z/pz_1_heralded_Z/output0.57_corrected_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
