@@ -31,7 +31,7 @@ def run_simulation(args):
     px = p[p_index]
     pz = 0.03
     w1 = 1
-    w2 = 1
+    w2 = 1.3
     # 0.19
     
     tot_count = 0

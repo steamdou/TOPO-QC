@@ -31,7 +31,7 @@ def run_simulation(args):
     px = p[p_index]
     pz = 0.04
     w1 = 1
-    w2 = 0.5
+    w2 = 1.1
     #0.09 worse
     #0.18
     
