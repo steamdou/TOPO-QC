@@ -421,7 +421,7 @@ class D4_Code:
         if self.encode_x.size > 0:
             self.LX_sign[self.encode_x] = 0                                      #set logical X stabilizers to 0, non-existent logical X to 2
         #initialized independently to improve speed
-        self.cn_dict, self.V, self.E1_list, self.E2_list, self.Gamma1, self.Gamma2, self.w1_arr, self.w2_arr = cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr
+        self.cn_dict, self.V, self.E1_list, self.E2_list, self.Gamma1, self.Gamma2, self.w1_arr, self.w2_arr = cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr.copy(), w2_arr.copy()
         
         self.X_error_edges = np.zeros(self.Nq, dtype=bool)
         self.Z_error_edges = np.zeros(self.Nq, dtype=bool)
