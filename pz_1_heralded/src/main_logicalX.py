@@ -73,7 +73,7 @@ if __name__ == "__main__":
     #[0.152, 0.154, 0.156, 0.158, 0.16, 0.162, 0.164, 0.166]
     #[0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.21]
     #[0.157, 0.159, 0.161, 0.163, 0.165, 0.167, 0.169, 0.171]
-    stop = 10000
+    stop = 8000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/ILP_eff_X/pz_1_heralded_X/output1.4_{timestamp}.txt" # /Users/aubreyzhang/Documents
+    output_file = f"/project/verresen/aubreyz/logicalXs/conditionalX/pz_1_heralded_X/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
