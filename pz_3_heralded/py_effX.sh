@@ -6,7 +6,7 @@
 #SBATCH --time=36:00:00                  
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=32             
+#SBATCH --cpus-per-task=32            
 #SBATCH --mem=64GB
 #SBATCH --partition=caslake
 
@@ -26,7 +26,7 @@ export TOPO_QC='/home/aubreyz/TOPO-QC'
 
 
 # ---- Go to the directory where you run sbatch ----
-cd "$TOPO_QC/pz_2_heralded"
+cd "$TOPO_QC/pz_3_heralded"
 
 # If your main.py is in ./src/main.py:
-python -m src.main_Z_only_copy
+python -m src.main_logicalX_eff

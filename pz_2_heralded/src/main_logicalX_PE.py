@@ -5,7 +5,7 @@ import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
 from .tableaux import *
-from .D4_eff import *
+from .D4_PE import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
@@ -30,8 +30,8 @@ def run_simulation(args):
     l_index, p_index, L, p, stop = args
     px = p[p_index]
     pz = 0.02
-    w1 = 1
-    w2 = 1.5
+    w1 = np.log(1/px - 1)
+    w2 = np.log(1/pz - 1)
     #0.4
     
     tot_count = 0
@@ -41,7 +41,7 @@ def run_simulation(args):
 
     while tot_count < stop:
         tot_count += 1
-        code = D4_Code(L[l_index], np.array([0,1,2]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
+        code = D4_Code(L[l_index], np.array([0,1,2]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr.copy(), w2_arr.copy(), env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
         code.Z_errors(pz)
         s = code.measure_e_anyons()

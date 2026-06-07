@@ -31,7 +31,7 @@ def run_simulation(args):
     px = p[p_index]
     pz = 0.03
     w1 = 1
-    w2 = 1.6
+    w2 = 0.8
     #0.18
     
     tot_count = 0
@@ -42,7 +42,7 @@ def run_simulation(args):
 
     while tot_count < stop:
         tot_count += 1
-        code = D4_Code(L[l_index], np.array([]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
+        code = D4_Code(L[l_index], np.array([]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr.copy(), w2_arr.copy(), env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
         code.Z_errors(pz)
         s = code.measure_e_anyons()
@@ -72,11 +72,11 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2]
+    p = [0.156, 0.158, 0.16, 0.162, 0.164, 0.166, 0.168, 0.17]
     #[0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.21]
     # [0.136, 0.138, 0.14, 0.142, 0.144, 0.146, 0.148, 0.15]
     #[0.102, 0.112, 0.122, 0.132, 0.142, 0.152, 0.162, 0.172]
-    stop = 8000
+    stop = 10000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/ILP_eff_Z/pz_3_heralded_Z/output1.6corrected_{timestamp}.txt"
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/ILP_eff_Z/pz_3_heralded_Z/output_precise_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")

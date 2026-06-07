@@ -29,10 +29,11 @@ def run_simulation(args):
 
     l_index, p_index, L, p, stop = args
     px = p[p_index]
-    pz = 0.05
+    pz = 0.04
     w1 = 1
-    w2 = 0.29
-    #0.17
+    w2 = 0.6
+    #0.08 worse
+    #0.15
     
     tot_count = 0
     error_count = 0
@@ -41,7 +42,7 @@ def run_simulation(args):
 
     while tot_count < stop:
         tot_count += 1
-        code = D4_Code(L[l_index], np.array([0,1,2]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
+        code = D4_Code(L[l_index], np.array([0,1,2]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr.copy(), w2_arr.copy(), env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
         code.Z_errors(pz)
         s = code.measure_e_anyons()
@@ -68,11 +69,12 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17]
-    #[0.136, 0.138, 0.14, 0.142, 0.144, 0.146, 0.148, 0.15]
+    p = [0.147, 0.149, 0.151, 0.153, 0.155, 0.157, 0.159, 0.161]
+    #[0.15, 0.152, 0.154, 0.156, 0.158, 0.16, 0.162, 0.164]
     #[0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17]
-    #[0.11, 0.112, 0.114, 0.116, 0.118, 0.12, 0.122, 0.124]
-    stop = 8000
+    #[0.09, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16]
+    # [0.11, 0.112, 0.114, 0.116, 0.118, 0.12, 0.122, 0.124]
+    stop = 10000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
@@ -96,7 +98,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/ILP_eff_X/pz_5_heralded_X/output0.29_{timestamp}.txt" # /Users/aubreyzhang/Documents
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/ILP_eff_X/pz_4_heralded_X/output_precise_{timestamp}.txt" # /Users/aubreyzhang/Documents
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")

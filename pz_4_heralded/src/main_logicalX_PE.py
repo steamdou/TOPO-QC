@@ -5,7 +5,7 @@ import gurobipy as gp
 
 sys.path.append(os.path.dirname(__file__))
 from .tableaux import *
-from .D4_eff import *
+from .D4_PE import *
 
 # Global variable to store the Gurobi environment for each worker process
 _worker_env = None
@@ -30,40 +30,35 @@ def run_simulation(args):
     l_index, p_index, L, p, stop = args
     px = p[p_index]
     pz = 0.04
-    w1 = 1
-    w2 = 0.8
-    #0.09 worse
-    #0.18
+    w1 = np.log(1/px - 1)
+    w2 = np.log(1/pz - 1)
+    #0.4
     
     tot_count = 0
     error_count = 0
-    # odd_count = 0
     cn_dict = connection_dict((L[l_index]*3,L[l_index]*3))
     V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr = build_ILP_structure((L[l_index]*3,L[l_index]*3), cn_dict, w1, w2)
 
     while tot_count < stop:
         tot_count += 1
-        code = D4_Code(L[l_index], np.array([]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
+        code = D4_Code(L[l_index], np.array([0,1,2]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr.copy(), w2_arr.copy(), env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
         code.Z_errors(pz)
         s = code.measure_e_anyons()
         if (np.isscalar(s) and s == 5):
-            raise ValueError('collapsed X logical')
+            error_count += 1
         else:
             code.flux_correction()
             output = code.correct_e_anyons()
-            if output == 3:
-                # return 3 if there are odd number of e-anyons for any color
-                # odd_count += 1
+            if (np.isscalar(output) and output == 5):
                 error_count += 1
-            elif output == 5:
-                raise ValueError('collapsed X logical')
-            elif output == 0:
-                if not np.array_equal(code.LZ, np.zeros(12)):
-                    error_count += 1
             else:
-                raise ValueError('unexpected output')
-    # print(odd_count, error_count)
+                lx_out = code.decode_X_logicals()
+                if lx_out==5:
+                    error_count += 1
+                elif lx_out:
+                    error_count += 1
+ 
     error_rate = error_count / tot_count
     return l_index, p_index, error_rate, tot_count
 
@@ -73,13 +68,10 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19]
-    #[0.158, 0.16, 0.162, 0.164, 0.166, 0.168, 0.17, 0.172]
-    #[0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17]
-    # [0.143, 0.146, 0.15, 0.154, 0.158, 0.162]
+    p = [0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2]
     #[0.152, 0.154, 0.156, 0.158, 0.16, 0.162, 0.164, 0.166]
-    #[0.14, 0.142, 0.144, 0.146, 0.148, 0.15, 0.152, 0.144]
-    #[0.073, 0.083, 0.093, 0.103, 0.113, 0.123, 0.133, 0.143]
+    #[0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2]
+    #[0.155, 0.157, 0.159, 0.161, 0.163, 0.165, 0.167, 0.169]
     stop = 8000
 
     error_rate = np.zeros((len(L), len(p)))
@@ -104,7 +96,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalZs/ILP_eff_Z/pz_4_heralded_Z/output0.8_{timestamp}.txt"
+    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/ILP_eff_X/pz_2_heralded_X/output1.5corrected_{timestamp}.txt" # /Users/aubreyzhang/Documents
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
