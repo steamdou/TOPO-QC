@@ -279,16 +279,15 @@ def ILP_decode(V, E1_list, E2_list, T1_list, T2_list,
     m.Params.OutputFlag = 0
 
     m.Params.Threads = 1
-    m.Params.Method = 1
     
-    m.Params.TimeLimit = 300.0
-    m.Params.MIPGap = 0.005
+    # m.Params.TimeLimit = 300.0
+    # m.Params.MIPGap = 0.005
 
-    # m.Params.MIPGap = 0.0
-    # m.Params.MIPGapAbs = 0.0
+    m.Params.MIPGap = 0.0
+    m.Params.MIPGapAbs = 0.0
     # m.Params.OptimalityTol = 1e-9
     # m.Params.FeasibilityTol = 1e-9
-    # m.Params.TimeLimit = GRB.INFINITY
+    m.Params.TimeLimit = GRB.INFINITY
     
     m.Params.ConcurrentMIP = 1
 
@@ -425,12 +424,17 @@ class D4_Code:
                                                                                  #The last six primed operators are to be used for updating logical X operators, but they are equivalent to the unprimed counterpart
         self.LX_vec = np.zeros((6,4*self.Nx*self.Ny))                            #dressing of logical X operators, rows: [Rv,Gv,Bv,Rh,Gh,Bh]
         self.LX_sign = 2*np.ones(np.shape(self.LX_vec)[0])
-        self.LX_sign[self.encode_x]=0                                            #set logical X stabilizers to 0, non-existent logical X to 2
+        if self.encode_x.size > 0:
+            self.LX_sign[self.encode_x] = 0                                      #set logical X stabilizers to 0, non-existent logical X to 2
         #initialized independently to improve speed
-        self.cn_dict, self.V, self.E1_list, self.E2_list, self.Gamma1, self.Gamma2, self.w1_arr, self.w2_arr = cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr
-
-        self.X_error_edges = []
-        self.Z_error_edges = []
+        self.cn_dict, self.V, self.E1_list, self.E2_list, self.Gamma1, self.Gamma2, self.w1_arr, self.w2_arr = cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr.copy(), w2_arr.copy()
+        
+        self.X_error_edges = np.zeros(self.Nq, dtype=bool)
+        self.Z_error_edges = np.zeros(self.Nq, dtype=bool)
+        self.X_correction_edges = np.zeros(self.Nq, dtype=bool)
+        self.Z_correction_edges = np.zeros(self.Nq, dtype=bool)
+        self.step2_weight = np.ones(self.Nq)
+        self.step2_correction_edges = np.zeros(self.Nq, dtype=bool)
 
         self.T1 = [[],[],[]]
         self.T2 = [[],[],[]]
@@ -439,14 +443,14 @@ class D4_Code:
         assert 0 <= rate <= 1
         for idx in range(self.Nq):
             if self.rng.random() <= rate:
-                self.X_error_edges.append(idx)
+                self.X_error_edges[idx] = True
                 apply_X(idx,self.bL,self.bR,self.SS,self.DD,self.RR,self.LZ,self.LX_vec,self.LX_sign,(self.Nx,self.Ny),self.cn_dict)
 
     def Z_errors(self, rate):
         assert 0 <= rate <= 1
         for idx in range(self.Nq):
             if self.rng.random() <= rate:
-                self.Z_error_edges.append(idx)
+                self.Z_error_edges[idx] = True
                 apply_Z(idx,(self.Nx,self.Ny),self.SS,self.RR,self.LX_vec,self.LX_sign,self.cn_dict)
     
     def single_edge_X(self, edge):
@@ -479,13 +483,16 @@ class D4_Code:
         active_S1_by_species, active_S2_by_species, active_S1, active_S2 = extract_active_edges(x, e1, e2)
         for S1_idx in active_S1:
             apply_X(S1_idx,self.bL,self.bR,self.SS,self.DD,self.RR,self.LZ,self.LX_vec,self.LX_sign,(self.Nx,self.Ny),self.cn_dict)
-        for S2_idx in active_S2:
-            apply_Z(S2_idx,(self.Nx,self.Ny),self.SS,self.RR,self.LX_vec,self.LX_sign,self.cn_dict)
+            self.X_correction_edges[S1_idx] = True
+        # for S2_idx in active_S2:
+        #     apply_Z(S2_idx,(self.Nx,self.Ny),self.SS,self.RR,self.LX_vec,self.LX_sign,self.cn_dict)
+        #     self.Z_correction_edges[S2_idx] = True
         assert np.array_equal(self.bL, np.zeros(self.Nx*self.Ny))
         assert np.array_equal(self.bR, np.zeros(self.Nx*self.Ny))
         return active_S1_by_species, active_S2_by_species, active_S1, active_S2
 
     def correct_e_anyons(self):
+        # measure e syndromes
         a_syndrome = np.zeros(self.Nx*self.Ny)
         for kv in range(self.Nx*self.Ny):
             outcome = measure_A(kv,(self.Nx,self.Ny),self.SS,self.DD,self.RR,self.bL,self.bR,self.LZ,self.LX_vec,self.LX_sign,self.cn_dict,rng=self.rng)
@@ -493,21 +500,42 @@ class D4_Code:
                 return 5
             else:
                 a_syndrome[kv]=outcome
-        z_correction_locations = np.nonzero(self.cn_dict['mgraph'][3].decode(a_syndrome))[0]
-        #print(z_correction_locations)
-        for z_edge in z_correction_locations:
-            apply_Z(z_edge,(self.Nx,self.Ny),self.SS,self.RR,self.LX_vec,self.LX_sign,self.cn_dict)
-        #check that all errors are corrected
-        assert np.array_equal(self.bL, np.zeros(self.Nx*self.Ny))
-        assert np.array_equal(self.bR, np.zeros(self.Nx*self.Ny))
-        for site in range(self.Nx*self.Ny):
-            outcome = measure_A(site,(self.Nx,self.Ny),self.SS,self.DD,self.RR,self.bL,self.bR,self.LZ,self.LX_vec,self.LX_sign,self.cn_dict,rng=self.rng)
-            if outcome != 0:
-                raise ValueError("anyons not corrected")
-        return 0
+        # build the matching graph
+        for i in range(self.Nq):
+            dc = self.cn_dict['endpoint_vertex'][i]
+            pe0 = dc['pe'][0]
+            pe1 = dc['pe'][1]
+            qe0 = dc['qe'][0]
+            qe1 = dc['qe'][1]
+            if self.X_correction_edges[pe0] and self.X_correction_edges[pe1]:
+                self.step2_weight[i] = 0
+            if self.X_correction_edges[qe0] and self.X_correction_edges[qe1]:
+                self.step2_weight[i] = 0
+        self.e_graph = Matching.from_check_matrix(self.cn_dict['HH_star'], self.step2_weight)
+        # correct errors
+        try:
+            z_correction_locations = np.nonzero(self.e_graph.decode(a_syndrome))[0]        
+            for z_edge in z_correction_locations:
+                apply_Z(z_edge,(self.Nx,self.Ny),self.SS,self.RR,self.LX_vec,self.LX_sign,self.cn_dict)
+                self.step2_correction_edges[z_edge] = True
+            #check that all errors are corrected
+            assert np.array_equal(self.bL, np.zeros(self.Nx*self.Ny))
+            assert np.array_equal(self.bR, np.zeros(self.Nx*self.Ny))
+            for site in range(self.Nx*self.Ny):
+                outcome = measure_A(site,(self.Nx,self.Ny),self.SS,self.DD,self.RR,self.bL,self.bR,self.LZ,self.LX_vec,self.LX_sign,self.cn_dict,rng=self.rng)
+                if outcome != 0:
+                    raise ValueError("anyons not corrected")
+            return 0
+        except ValueError: # No matching found, odd number of e-anyon of any color
+            return 3 #return 3 if there are odd number of e-anyons for each color
     
     def decode_X_logicals(self): 
         lx_total_sign = self.LX_sign.copy()
+
+        # If no logical X was initially encoded, nothing to check
+        if self.encode_x.size == 0:
+            return False
+
         # iterate over initial x-logicals
         for i in self.encode_x:
             if np.any(self.LX_vec[i,:3*self.Nx*self.Ny]==1) and self.LX_sign[i]<=1: # has Z dressing and active
