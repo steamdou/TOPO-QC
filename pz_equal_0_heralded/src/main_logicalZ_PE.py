@@ -40,7 +40,7 @@ def run_simulation(args):
 
     while tot_count < stop:
         tot_count += 1
-        code = D4_Code(L[l_index], np.array([0,1,2]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr.copy(), w2_arr.copy(), env=_worker_env, rng=_worker_rng)
+        code = D4_Code(L[l_index], np.array([]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr.copy(), w2_arr.copy(), env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
         s = code.measure_e_anyons()
         if (np.isscalar(s) and s == 5):
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/verresen/aubreyz/logicalXs/ILP_PE_X/pz_0_heralded_X/output_{timestamp}.txt" # /Users/aubreyzhang/Documents
+    output_file = f"/project/verresen/aubreyz/logicalZs/ILP_PE_Z/pz_0_heralded_Z/output_{timestamp}.txt" 
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
