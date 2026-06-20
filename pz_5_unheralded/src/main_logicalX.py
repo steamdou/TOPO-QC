@@ -63,8 +63,8 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16]
-    stop = 8000
+    p = [0.139, 0.141, 0.143, 0.145, 0.147, 0.149, 0.151, 0.153]
+    stop = 10000
 
     error_rate = np.zeros((len(L), len(p)))
     counter = np.zeros((len(L), len(p)))
@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/liangjiang/aubreyz/pz_logicalXs/ILP_improved/pz_5_unheralded_X/output_{timestamp}.txt"
+    output_file = f"/project/verresen/aubreyz/logicalXs/MWPMX/pz_5_unheralded_X/output_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")

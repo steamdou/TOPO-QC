@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=d4_sim_python          
-#SBATCH --account=pi-verresen
+#SBATCH --account=pi-liangjiang
 #SBATCH --output=d4_sim-%J.out           
 #SBATCH --error=d4_sim-%J.err           
 #SBATCH --time=36:00:00                  
