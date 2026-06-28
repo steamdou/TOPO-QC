@@ -66,6 +66,7 @@ def run_simulation(args):
     # print(odd_count, error_count)
     error_rate = error_count / tot_count
     return l_index, p_index, error_rate, tot_count
+    
 
 # Main script
 if __name__ == "__main__":
