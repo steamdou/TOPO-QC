@@ -40,22 +40,27 @@ def run_simulation(args):
 
     while tot_count < stop:
         tot_count += 1
-        code = D4_Code(L[l_index], np.array([]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr, w2_arr, env=_worker_env, rng=_worker_rng)
+        code = D4_Code(L[l_index], np.array([]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr.copy(), w2_arr.copy(), env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
         code.Z_errors(pz)
         code.flux_correction_MWPM()
         output = code.correct_e_anyons()
-        if (np.isscalar(output) and output == 5):
+        if output == 3:
+            # return 3 if there are odd number of e-anyons for any color
+            # odd_count += 1
             error_count += 1
+        elif output == 5:
+            raise ValueError('collapsed X logical')
+        elif output == 0:
+            if not np.array_equal(code.LZ, np.zeros(12)):
+                error_count += 1
         else:
-            lx_out = code.decode_X_logicals()
-            if lx_out==5:
-                error_count += 1
-            elif lx_out:
-                error_count += 1
- 
+            raise ValueError('unexpected output')
+    # print(odd_count, error_count)
     error_rate = error_count / tot_count
     return l_index, p_index, error_rate, tot_count
+
+
 
 # Main script
 if __name__ == "__main__":
