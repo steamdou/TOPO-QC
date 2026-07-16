@@ -43,23 +43,19 @@ def run_simulation(args):
         code = D4_Code(L[l_index], np.array([]), cn_dict, V, E1_list, E2_list, Gamma1, Gamma2, w1_arr.copy(), w2_arr.copy(), env=_worker_env, rng=_worker_rng)
         code.X_errors(px)
         # code.Z_errors(pz)
-        s = code.measure_e_anyons()
-        if (np.isscalar(s) and s == 5):
+        code.flux_correction_MWPM()
+        output = code.correct_e_anyons()
+        if output == 3:
+            # return 3 if there are odd number of e-anyons for any color
+            # odd_count += 1
+            error_count += 1
+        elif output == 5:
             raise ValueError('collapsed X logical')
-        else:
-            code.flux_correction()
-            output = code.correct_e_anyons()
-            if output == 3:
-                # return 3 if there are odd number of e-anyons for any color
-                # odd_count += 1
+        elif output == 0:
+            if not np.array_equal(code.LZ, np.zeros(12)):
                 error_count += 1
-            elif output == 5:
-                raise ValueError('collapsed X logical')
-            elif output == 0:
-                if not np.array_equal(code.LZ, np.zeros(12)):
-                    error_count += 1
-            else:
-                raise ValueError('unexpected output')
+        else:
+            raise ValueError('unexpected output')
     # print(odd_count, error_count)
     error_rate = error_count / tot_count
     return l_index, p_index, error_rate, tot_count
@@ -71,7 +67,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     L = [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
-    p = [0.157, 0.159, 0.161, 0.163, 0.165, 0.167, 0.169, 0.171]
+    p = [0.155, 0.157, 0.159, 0.161, 0.163, 0.165, 0.167, 0.169]
     stop = 10000
 
     error_rate = np.zeros((len(L), len(p)))
@@ -96,7 +92,7 @@ if __name__ == "__main__":
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    output_file = f"/project/verresen/aubreyz/logicalZs/MWPMZ/pz_0_unheralded_Z/output_{timestamp}.txt"
+    output_file = f"/project/verresen/aubreyz/logicalZs/MWPMZ/pz_0_unheralded_Z/CORRECTED_output_{timestamp}.txt"
 
     with open(output_file, "w") as f:
         f.write("Simulation parameters:\n")
