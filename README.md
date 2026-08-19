@@ -14,13 +14,7 @@ conda activate topoqc
 
 After activation, you should see `(topoqc)` at the beginning of your terminal prompt.
 
-3. Navigate to the `python` directory:
-
-```shell
-cd python
-```
-
-Then install the project package in editable mode:
+3. Install the project package in editable mode:
 
 ```shell
 pip install -e .
