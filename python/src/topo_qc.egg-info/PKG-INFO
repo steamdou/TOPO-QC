@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: topo_qc
+Version: 0.0.1
+Summary: Methods for ILP decoder project
+Author-email: Aubrey Zhang <aubreyz@uchicago.edu>
+Requires-Dist: numpy
+Requires-Dist: pyyaml
+Requires-Dist: gurobipy

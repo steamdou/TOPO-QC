@@ -1,0 +1,15 @@
+pyproject.toml
+src/D4_new.py
+src/main_ILP.py
+src/main_new_PE_X.py
+src/main_new_PE_Z.py
+src/main_new_conditional_Z.py
+src/main_new_effective_X.py
+src/main_new_effective_Z.py
+src/tableaux.py
+src/topo_qc.egg-info/PKG-INFO
+src/topo_qc.egg-info/SOURCES.txt
+src/topo_qc.egg-info/dependency_links.txt
+src/topo_qc.egg-info/entry_points.txt
+src/topo_qc.egg-info/requires.txt
+src/topo_qc.egg-info/top_level.txt

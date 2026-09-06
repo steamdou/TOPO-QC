@@ -1,0 +1,15 @@
+[project]
+name = "topo_qc"
+version = "0.0.1"
+authors = [
+  { name="Aubrey Zhang", email="aubreyz@uchicago.edu" },
+]
+description = "Methods for ILP decoder project"
+dependencies = [
+    "numpy",
+    "pyyaml",
+    "gurobipy"
+]
+
+[project.scripts]
+topo_qc-run = "main_ILP:main"

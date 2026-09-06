@@ -1,0 +1,2 @@
+[console_scripts]
+topo_qc-run = main_ILP:main
