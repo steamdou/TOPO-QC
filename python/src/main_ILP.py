@@ -40,27 +40,27 @@ def run_simulation(args):
 
     decoder_type = config['decoder_type']
 
-    if decoder_type == 'P(E)' or decoder_type == 'effective':
+    if decoder_type == 'effective':
         w_site = 0
-
-        if decoder_type == 'effective':
-            w1 = config['effective_w1']
-            w2 = config['effective_w2']
-            
-        elif decoder_type == 'P(E)' :
-            w1 = np.log(1/px - 1)
-            if pz > 0:
-                w2 = np.log(1/pz - 1)
-            else:
-                w2 = 27*L[l_index]*L[l_index]
-
-    if decoder_type == 'conditional':
-        w_site = np.log(2)
-        
-        w1 = np.log(1/px - 1)
+        w1 = config['effective_w1']
+        w2 = config['effective_w2']
+         
+    elif decoder_type == 'P(E)' :
+        w_site = 0
         if pz > 0:
+            w1 = np.log(1/px - 1)
             w2 = np.log(1/pz - 1)
         else:
+            w1 = 1
+            w2 = 27*L[l_index]*L[l_index]
+
+    elif decoder_type == 'conditional':
+        w_site = np.log(2)
+        if pz > 0:
+            w1 = np.log(1/px - 1)
+            w2 = np.log(1/pz - 1)
+        else:
+            w1 = 1
             w2 = 27*L[l_index]*L[l_index]
 
     
@@ -125,11 +125,12 @@ def main(): # filename: path to config yaml file with program and simulation set
         description="Run decoder program."
     )
     parser.add_argument("config", help="The program YAML config file")
+    args = parser.parse_args()
 
     # ---- start timer ----
     start_time = time.time()
 
-    config_filename = parser.config
+    config_filename = os.path.expandvars(args.config)
     with open(config_filename, "r") as file:
         config = yaml.load(file, Loader=yaml.SafeLoader)
 

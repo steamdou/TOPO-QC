@@ -22,6 +22,7 @@ dependencies:
   - scipy
   - seaborn
   - tqdm
+  - pymatching
   - pip:
     - gurobipy
     - h5py
