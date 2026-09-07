@@ -8,7 +8,7 @@ X_stabilizers: []
 effective_w1: 1
 effective_w2: 1.4
 iterations: 1
-output_path: /project/verresen/aubreyz/logicalZs/conditionalZ_new/pz_1_heralded_Z
+output_path: /project/verresen/aubreyz/logicalZs/conditionalZ_new/TEST
 #/Users/aubreyzhang/Documents/ILP_DATA/YAML_TESTING
 
 #/project/verresen/aubreyz/logicalZs/conditionalZ_new/pz_1_heralded_Z
