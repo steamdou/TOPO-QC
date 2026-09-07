@@ -82,19 +82,38 @@ def run_simulation(args):
         code.X_errors(px)
         code.Z_errors(pz)
         s = code.measure_e_anyons()
-        if (np.isscalar(s) and s == 5):
-            error_count += 1
-        else:
-            code.flux_correction()
-            output = code.correct_e_anyons()
-            if (np.isscalar(output) and output == 5):
+
+        if len(config['X_stabilizers']) > 0:
+            if (np.isscalar(s) and s == 5):
                 error_count += 1
             else:
-                lx_out = code.decode_X_logicals()
-                if lx_out==5:
+                code.flux_correction()
+                output = code.correct_e_anyons()
+                if (np.isscalar(output) and output == 5):
                     error_count += 1
-                elif lx_out:
+                else:
+                    lx_out = code.decode_X_logicals()
+                    if lx_out==5:
+                        error_count += 1
+                    elif lx_out:
+                        error_count += 1
+        else:
+            if (np.isscalar(s) and s == 5):
+                raise ValueError('collapsed X logical')
+            else:
+                code.flux_correction()
+                output = code.correct_e_anyons()
+                if output == 3:
+                    # return 3 if there are odd number of e-anyons for any color
+                    # odd_count += 1
                     error_count += 1
+                elif output == 5:
+                    raise ValueError('collapsed X logical')
+                elif output == 0:
+                    if not np.array_equal(code.LZ, np.zeros(12)):
+                        error_count += 1
+                else:
+                    raise ValueError('unexpected output')
  
     error_rate = error_count / tot_count
     return l_index, p_index, error_rate, tot_count
