@@ -1,0 +1,9 @@
+decoder_type: 'effective'
+lattice_sizes: [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
+px_vals: [0.1594, 0.1614, 0.1634, 0.1654, 0.1674, 0.1694, 0.1714, 0.1734]
+pz_val: 0.02
+X_stabilizers: [0,1,2]
+effective_w1: 1
+effective_w2: 1
+iterations: 10000
+output_path: /project/verresen/aubreyz/logicalXs/ILP_eff_X_new/pz_2_heralded_X

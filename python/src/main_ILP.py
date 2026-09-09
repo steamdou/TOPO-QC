@@ -45,7 +45,7 @@ def run_simulation(args):
         w1 = config['effective_w1']
         w2 = config['effective_w2']
          
-    elif decoder_type == 'P(E)' :
+    elif decoder_type == 'P(E)':
         w_site = 0
         if pz > 0:
             w1 = np.log(1/px - 1)
