@@ -1,0 +1,9 @@
+decoder_type: 'conditional'
+lattice_sizes: [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
+px_vals: [0.1729, 0.1749, 0.1769, 0.1789, 0.1809, 0.1829, 0.1849, 0.1869]
+pz_val: 0.00
+X_stabilizers: [0,1,2]
+effective_w1: 0
+effective_w2: 0
+iterations: 10000
+output_path: /project/verresen/aubreyz/logicalXs/conditionalX_new/pz_0_heralded_X

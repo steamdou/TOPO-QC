@@ -2,7 +2,8 @@
 name = "topo_qc"
 version = "0.0.1"
 authors = [
-  { name="Aubrey Zhang", email="aubreyz@uchicago.edu" },
+  { name="Aubrey Zhang", email="aubreyz@uchicago.edu", 
+    name="Dian Jing", email="rossoneri@uchicago.edu"},
 ]
 description = "Methods for ILP decoder project"
 dependencies = [

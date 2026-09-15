@@ -1,0 +1,9 @@
+decoder_type: 'P(E)'
+lattice_sizes: [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
+px_vals: [0.1717, 0.1737, 0.1757, 0.1777, 0.1797, 0.1817, 0.1837, 0.1857]
+pz_val: 0.00
+X_stabilizers: [0,1,2]
+effective_w1: 0
+effective_w2: 0
+iterations: 10000
+output_path: /project/verresen/aubreyz/logicalXs/ILP_PE_X_new/pz_0_heralded_X

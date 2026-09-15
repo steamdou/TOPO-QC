@@ -80,7 +80,9 @@ def run_simulation(args):
             env=_worker_env, rng=_worker_rng
         )
         code.X_errors(px)
-        code.Z_errors(pz)
+        if pz != 0:
+            code.Z_errors(pz)
+            
         s = code.measure_e_anyons()
 
         if len(config['X_stabilizers']) > 0:

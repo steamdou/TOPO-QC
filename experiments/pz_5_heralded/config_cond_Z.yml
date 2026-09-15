@@ -1,0 +1,9 @@
+decoder_type: 'conditional'
+lattice_sizes: [4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7]
+px_vals: [0.1504, 0.1524, 0.1544, 0.1564, 0.1584, 0.1604, 0.1624, 0.1644]
+pz_val: 0.05
+X_stabilizers: []
+effective_w1: 1
+effective_w2: 0.4
+iterations: 10000
+output_path: /project/verresen/aubreyz/logicalZs/conditionalZ_new/pz_5_heralded_Z
