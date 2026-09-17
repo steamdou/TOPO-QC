@@ -162,6 +162,7 @@ def main(): # filename: path to config yaml file with program and simulation set
 
     # -------- Save to txt file --------
     timestamp = time.strftime("%Y%m%d_%H%M%S")
+    os.makedirs(config['output_path'], exist_ok=True)
     output_file = config['output_path'] + f"/output_{timestamp}.txt"
 
     with open(output_file, "w") as f:
