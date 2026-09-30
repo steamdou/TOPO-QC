@@ -63,6 +63,10 @@ def run_simulation(args):
             w1 = 1
             w2 = 27*L[l_index]*L[l_index]
 
+    elif decoder_type == 'MWPM':
+        w_site = 0
+        w1 = 1
+        w2 = 1
     
     tot_count = 0
     error_count = 0
@@ -82,15 +86,23 @@ def run_simulation(args):
         code.X_errors(px)
         if pz != 0:
             code.Z_errors(pz)
-            
-        s = code.measure_e_anyons()
+
+        if decoder_type == "MWPM":
+            s = None
+        else:
+            s = code.measure_e_anyons()
 
         if len(config['X_stabilizers']) > 0:
             if (np.isscalar(s) and s == 5):
                 error_count += 1
             else:
-                code.flux_correction()
+                if decoder_type == "MWPM":
+                    code.flux_correction_MWPM()
+                else:
+                    code.flux_correction()
+
                 output = code.correct_e_anyons()
+
                 if (np.isscalar(output) and output == 5):
                     error_count += 1
                 else:
@@ -103,8 +115,13 @@ def run_simulation(args):
             if (np.isscalar(s) and s == 5):
                 raise ValueError('collapsed X logical')
             else:
-                code.flux_correction()
+                if decoder_type == "MWPM":
+                    code.flux_correction_MWPM()
+                else:
+                    code.flux_correction()
+
                 output = code.correct_e_anyons()
+
                 if output == 3:
                     # return 3 if there are odd number of e-anyons for any color
                     # odd_count += 1
