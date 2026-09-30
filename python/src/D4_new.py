@@ -386,7 +386,17 @@ class D4_Code:
                 elif measurement_output == 1:
                     self.T2[star_color[idx]].append(idx)
         return (self.T1, self.T2)
-    
+
+    def flux_correction_MWPM(self): 
+        for cc in range(3):
+            cc_syndrome = colored_syndrome(cc, self.bL, self.bR, self.cn_dict)
+            correction_locations = np.nonzero(self.cn_dict['mgraph'][cc].decode(cc_syndrome))[0]
+            for S1_idx in correction_locations:
+                apply_X(S1_idx,self.bL,self.bR,self.SS,self.DD,self.RR,self.LZ,self.LX_vec,self.LX_sign,(self.Nx,self.Ny),self.cn_dict)
+                self.X_correction_edges[S1_idx] = True
+        assert np.array_equal(self.bL, np.zeros(self.Nx*self.Ny))
+        assert np.array_equal(self.bR, np.zeros(self.Nx*self.Ny))
+
     def flux_correction(self):
         x, e1, e2, _, _ = ILP_decode(
             self.V_color, self.E1_list, self.E2_list, self.T1, self.T2,
